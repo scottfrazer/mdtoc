@@ -108,7 +108,12 @@ def toc(md_string):
 
 
 def headers(md_string):
-    """Generator of (level: int, header: str) tuples from Markdown string."""
+    """Generator of (level: int, header: str) tuples from Markdown string.
+
+    The headers are not yet formatted (cleaned); they are only generated here
+    via match for what loosely describes an ATX header pattern.
+    """
+
     is_comment_block = False
     for line in md_string.split("\n"):
         if line.startswith("```"):
@@ -118,7 +123,7 @@ def headers(md_string):
         header = HEADER_PAT.match(line)
         if header:
             level = len(header.group(1))
-            header = header.group(2).strip()
+            header = header.group(2)
             yield level, header
 
 
