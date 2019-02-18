@@ -11,6 +11,10 @@ import requests
 from xtermcolor import colorize
 
 
+class MarkdownError(Exception):
+    """Markdown formatted incorrectly."""
+
+
 def as_link(x):
     """Convert Markdown header string into relative URL."""
     return re.sub(r"[^a-zA-Z0-9-_]", "", x.lower().replace(" ", "-"))
@@ -63,6 +67,18 @@ def modify_and_write(path):
         "<!---toc start-->\n\n{}\n\n<!---toc end-->".format(table_of_contents),
         markdown,
     )
+
+    # If we couldn't find tags and 0 replacements were made, let user
+    # know and raise.
+    if not replacements:
+        raise MarkdownError(
+            "Document missing toc start/end tags."
+            "  Add these delimiters to your Markdown file:\n\n"
+            "\t<!---toc start-->\n"
+            "\t<!---toc end-->\n\n"
+            "Then, run:\n\n"
+            "\t$ mdtoc %s" % path
+        )
 
     with open(path, "w") as fp:
         fp.write(new_markdown)
