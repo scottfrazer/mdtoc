@@ -48,10 +48,10 @@ Add these delimiters to your Markdown file:
 Then, from the command line, run:
 
 ```bash
-$ mdtoc /path/to/myfile.md  # Overwrites in-place without --outfile
+$ mdtoc /path/to/myfile.md
 ```
 
-This will overwrite the target file `your_markdown.md` in-place with the table of contents replacing the text _in between_ the delimiters marked above.  (The delimiters themselves are invisible comments when rendered.)  If you want to write to a new file, use `--outfile`.  If you want to write just the TOC to stdout, use `--stdout`.
+This will overwrite the target file `/path/to/myfile.md` in-place with the table of contents replacing the text _in between_ the delimiters marked above.  (The delimiters themselves are invisible comments when rendered.)  If you want to write to a new file, use `--outfile`.  If you want to write just the TOC to stdout, use `--stdout`.
 
 ## Technical Details
 
