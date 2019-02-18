@@ -40,7 +40,7 @@ def toc(md_string):
 
 
 def headers(md_string):
-    """Takes a Markdown string, returns generator of (level, header) tuples."""
+    """Generator of (level: int, header: str) tuples from Markdown string."""
     is_comment_block = False
     for line in md_string.split("\n"):
         if line.startswith("```"):
@@ -55,6 +55,14 @@ def headers(md_string):
 
 
 def modify_and_write(path):
+    """Write a table of contents to the Markdown file at `path`.
+
+    Overwrites the file in place.
+
+    If no tags or improper tags (<!---toc start--> and <!---toc end-->),
+    raise MarkdownError before writing back.
+    """
+
     with open(path) as fp:
         markdown = fp.read()
         table_of_contents = toc(markdown)
