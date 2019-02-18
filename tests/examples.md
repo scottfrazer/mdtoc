@@ -20,9 +20,9 @@ This is not a heading, because the first `#` is escaped.
 
 Leading and trailing blanks are ignored in parsing inline content:
 
- ### foo
+ # foo
   ## foo
-   # foo
+   ### foo
 
 One to three spaces indentation are allowed.
 
