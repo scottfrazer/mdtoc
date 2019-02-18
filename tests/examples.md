@@ -92,32 +92,32 @@ What follows are some additional unusual examples not found in the GitHub spec. 
 
 #   Spaces     here ...     
 
-becomes:
+becomes: `#spaces-----here-`
 
 # THis is CAPS!!!
 
-becomes:
-
-## this is an l2 header
-
-becomes:
+becomes: `#this-is-caps`
 
 ### This is ... an L3 header??
 
-becomes:
+becomes: `#this-is--an-l3-header`
 
 #### This is a Spicy Jalapeño Header! :)
 
-becomes:
+becomes: `#this-is-a-spicy-jalapeño-header-`
 
 # Чемезов заявил об уничтожении поврежденных штормом ракет С-400 для Китая
 
-becomes:
+becomes: `#чемезов-заявил-об-уничтожении-поврежденных-штормом-ракет-с-400-для-китая`
 
 ### This has (some parens) in it!!
 
-becomes:
+becomes: `#this-has-some-parens-in-it`
 
 #### What About Dashes: -----  ##
 
-becomes:
+becomes: `#what-about-dashes------`
+
+### Here is All Punctuation \'!\"\#$%&\'()\*+,-./:;<=>?@[\\]^\_\`{|}~ At Once
+
+text
