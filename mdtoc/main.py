@@ -17,6 +17,7 @@ import argparse
 import collections
 import os
 import re
+import sys
 
 import requests
 from xtermcolor import colorize
@@ -137,14 +138,19 @@ def headers(md_string):
             yield level, header
 
 
-def modify_and_write(path):
+def modify_and_write(path, outfile=None):
     """Write a table of contents to the Markdown file at `path`.
 
     Overwrites the file in place.
 
     If no tags or improper tags (<!---toc start--> and <!---toc end-->),
     raise MarkdownError before writing back.
+
+    If `outfile` is not None, write the results to that file.
+    Otherwise, overwrite the input `path` inplace.
     """
+
+    write_stdout = outfile is sys.stdout
 
     with open(path) as fp:
         markdown = fp.read()
@@ -157,25 +163,35 @@ def modify_and_write(path):
 
     # If we couldn't find tags and 0 replacements were made, let user
     # know and raise.
-    if not replacements:
-        raise MarkdownError(
-            "Document missing toc start/end tags.\n"
-            "Add these delimiters to your Markdown file:\n\n"
-            "\t<!---toc start-->\n"
-            "\t<!---toc end-->\n\n"
-            "Then, run:\n\n"
-            "\t$ mdtoc %s" % path
-        )
+    if not write_stdout:
+        if not replacements:
+            raise MarkdownError(
+                "Document missing toc start/end tags.\n"
+                "Add these delimiters to your Markdown file:\n\n"
+                "\t<!---toc start-->\n"
+                "\t<!---toc end-->\n\n"
+                "Then, run:\n\n"
+                "\t$ mdtoc %s" % path
+            )
 
-    elif replacements > 1:
-        raise MarkdownError(
-            "Multiple toc start/end tag pairs detected."
-            " Your Markdown file should include only one pair of tags"
-        )
+        elif replacements > 1:
+            raise MarkdownError(
+                "Multiple toc start/end tag pairs detected."
+                " Your Markdown file should include only one pair of tags"
+            )
 
-    with open(path, "w") as fp:
-        fp.write(new_markdown)
-    print(colorize("Success: wrote TOC to {path}".format(path=path), ansi=22))
+    if outfile is None:
+        # Default
+        outfile = path
+
+    if write_stdout:
+        outfile.write(table_of_contents + "\n")
+    else:
+        with open(outfile, "w") as fp:
+            fp.write(new_markdown)
+        print(
+            colorize("Success: wrote TOC to {path}".format(path=outfile), ansi=22)
+        )
 
 
 def get_links(md_string):
@@ -228,11 +244,23 @@ def parse_args():
     parser.add_argument(
         "--check-links",
         action="store_true",
-        help="Find all hyperlinks and ensure that\nthey point to something valid",  # noqa
+        help="find all hyperlinks and ensure that\nthey point to something valid",  # noqa
+    )
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        "--outfile",
+        help="instead of overwriting the input file,\n"
+             "write to this file instead",
+    )
+    group.add_argument(
+        "--stdout",
+        action="store_true",
+        help="don't write or overwrite any file;\n"
+             "just print the TOC (not full .md file) to stdout",
     )
     parser.add_argument(
         "markdown_file",
-        help="Relative or abs. path of the Markdown\n(.md) file to overwrite",
+        help="relative or abs. path of the Markdown\n(.md) file to overwrite",
     )
     return parser.parse_args()
 
@@ -241,9 +269,14 @@ def cli():
     """Command-line entry point."""
     cli = parse_args()
     cli.markdown_file = os.path.expanduser(cli.markdown_file)
-
+    if cli.stdout:
+        outfile = sys.stdout
+    elif cli.outfile:
+        outfile = cli.outfile
+    else:
+        outfile = None
     try:
-        modify_and_write(cli.markdown_file)
+        modify_and_write(cli.markdown_file, outfile=outfile)
     except OSError:
         print(
             colorize(

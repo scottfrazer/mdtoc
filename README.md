@@ -48,10 +48,10 @@ Add these delimiters to your Markdown file:
 Then, from the command line, run:
 
 ```bash
-$ mdtoc /path/to/myfile.md  # Overwrites in-place
+$ mdtoc /path/to/myfile.md  # Overwrites in-place without --outfile
 ```
 
-This will overwrite the target file `your_markdown.md` in-place with the table of contents replacing the text _in between_ the delimiters marked above.  (The delimiters themselves are invisible comments when rendered.)
+This will overwrite the target file `your_markdown.md` in-place with the table of contents replacing the text _in between_ the delimiters marked above.  (The delimiters themselves are invisible comments when rendered.)  If you want to write to a new file, use `--outfile`.  If you want to write just the TOC to stdout, use `--stdout`.
 
 ## Technical Details
 
@@ -71,3 +71,39 @@ Two other small notes:
 
 - `mdtoc` will ignore comments prefaced with `#` that occur in Markdown code blocks (<code>\`\`\`</code>).
 - `mdtoc` does *not* check for congruency/continuity of header levels.  If a level-3 header comes directly after a level-1 header, that is on you and will be rendered as-is.
+
+## Full Command-Line Help Doc
+
+```
+$ mdtoc --help
+usage: mdtoc [-h] [--version] [--check-links] [--outfile OUTFILE | --stdout]
+             markdown_file
+
+Generates table of contents for Markdown files.
+
+The algorithm searches for the text blocks
+between the delimiters:
+
+<!---toc start--->
+... anything ...
+<!---toc end--->
+
+The contents of the block are then replaced
+by a table of contents.
+
+positional arguments:
+  markdown_file      relative or abs. path of the Markdown
+                     (.md) file to overwrite
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --version          show program's version number and exit
+  --check-links      find all hyperlinks and ensure that
+                     they point to something valid
+  --outfile OUTFILE  instead of overwriting the input file,
+                     write to this file instead
+  --stdout           don't write or overwrite any file;
+                     just print the TOC to stdout
+
+Created by Scott Frazer (https://github.com/scottfrazer).
+```
