@@ -51,7 +51,7 @@ Then, from the command line, run:
 $ mdtoc your_markdown.md
 ```
 
-This will overwrite the target file `your_markdown.md` in-place with the table of contents replacing the delimiters marked above.
+This will overwrite the target file `your_markdown.md` in-place with the table of contents replacing the text _in between_ the delimiters marked above.  (The delimiters themselves are invisible comments when rendered.)
 
 ## Technical Details
 
@@ -64,6 +64,7 @@ Some ground rules:
 - Closing hashes are optional and do not need to match opening hashes in number; they are not part of title.
 - Trailing spaces in the title are not part of title.  (All surrounding whitespace is stripped.)
 - `mdtoc` will ignore comments prefaced with `#` that occur in Markdown code blocks (<code>\`\`\`</code>).
+- `mdtoc` does *not* check for congruency/continuity of header levels.  If a level-3 header comes directly after a level-1 header, that is on you and will be rendered as-is.
 
 How did we build these rules?
 
