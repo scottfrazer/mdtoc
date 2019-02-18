@@ -1,0 +1,2 @@
+- Scott Frazer <scott.d.frazer@gmail.com>
+- Brad Solomon <brad.solomon.1124@gmail.com>
