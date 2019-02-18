@@ -3,9 +3,7 @@ from __future__ import unicode_literals
 
 import argparse
 import os
-import pkg_resources
 import re
-import sys
 
 import requests
 from xtermcolor import colorize
@@ -13,7 +11,7 @@ from xtermcolor import colorize
 
 TOC_PAT = re.compile(
     r"^<\!---toc start-->(.*?)<\!---toc end-->$",
-    flags=re.DOTALL|re.M
+    flags=re.DOTALL | re.M
 )
 
 # Pattern needs to be careful for URLs containing parentheses,
@@ -152,6 +150,7 @@ by a table of contents.
 
 def parse_args():
     """Parse command-line arguments."""
+    from mdtoc import __version__
     parser = argparse.ArgumentParser(
         description=_description,
         epilog="Created by Scott Frazer (https://github.com/scottfrazer)",
@@ -160,7 +159,7 @@ def parse_args():
     parser.add_argument(
         "--version",
         action="version",
-        version=str(pkg_resources.get_distribution("mdtoc")),
+        version=__version__,
     )
     parser.add_argument(
         "--check-links",

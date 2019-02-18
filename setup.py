@@ -1,11 +1,12 @@
 from setuptools import setup
 
-version = "1.0"
+from mdtoc import __version__
+
 long_description = "Adds table of contents to Markdown files"
 
 setup(
     name="mdtoc",
-    version=version,
+    version=__version__,
     description=long_description,
     author="Scott Frazer",
     author_email="scott.d.frazer@gmail.com",
