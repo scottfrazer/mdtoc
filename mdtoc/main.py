@@ -109,8 +109,8 @@ def modify_and_write(path):
     # know and raise.
     if not replacements:
         raise MarkdownError(
-            "Document missing toc start/end tags."
-            "  Add these delimiters to your Markdown file:\n\n"
+            "Document missing toc start/end tags.\n"
+            "Add these delimiters to your Markdown file:\n\n"
             "\t<!---toc start-->\n"
             "\t<!---toc end-->\n\n"
             "Then, run:\n\n"
@@ -125,6 +125,7 @@ def modify_and_write(path):
 
     with open(path, "w") as fp:
         fp.write(new_markdown)
+    print(colorize("Success: wrote TOC to {path}".format(path=path), ansi=22))
 
 
 def get_links(md_string):
@@ -194,7 +195,20 @@ def cli():
     cli = parser.parse_args()
     cli.markdown_file = os.path.expanduser(cli.markdown_file)
 
-    modify_and_write(cli.markdown_file)
+    try:
+        modify_and_write(cli.markdown_file)
+    except OSError:
+        print(
+            colorize(
+                "Failed: "
+                "Not found: {path}".format(path=cli.markdown_file),
+                ansi=1
+            )
+        )
+        return 1
+    except MarkdownError as e:
+        print(colorize("Failed: " + str(e), ansi=1))
+        return 1
 
     if cli.check_links:
         with open(cli.markdown_file) as fp:
