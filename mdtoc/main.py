@@ -24,7 +24,7 @@ from xtermcolor import colorize
 
 TOC_PAT = re.compile(
     r"[ \t]*<\!---toc start-->(.*?)<\!---toc end-->[ \t]*",
-    flags=re.DOTALL | re.M
+    flags=re.DOTALL | re.M,
 )
 
 # Pattern needs to be careful for URLs containing parentheses,
@@ -34,7 +34,7 @@ TOC_PAT = re.compile(
 MD_LINK_PAT = re.compile(
     r"\[([^\[\]]+)\]"  # Brackets containing non-bracket characters
     r"\((([^\s)(]|\([^\s)(]*\))*)\)",  # Outer parentheses
-    re.M
+    re.M,
 )
 
 # A Markdown "atx-style" header, GitHub-flavored.
@@ -71,7 +71,7 @@ def as_link(x):
         r"[^-\w\s]",
         "",
         re.sub(r"\s+", "-", _strip(x.lower())),
-        flags=re.U  # Python 2
+        flags=re.U,  # Python 2
     )
     # One more fix: if the resulting link ends with multiple hyphens,
     # make it just one.
@@ -183,6 +183,7 @@ def get_links(md_string):
 
     Yields a 4-tuple: text, URL, linenum, colnum.
     """
+
     def line_col(position):
         l, c = 1, 1
         for idx, char in enumerate(md_string):
@@ -217,16 +218,13 @@ by a table of contents.
 def parse_args():
     """Parse command-line arguments."""
     from mdtoc import __version__
+
     parser = argparse.ArgumentParser(
         description=_description,
         epilog="Created by Scott Frazer (https://github.com/scottfrazer).\n",
         formatter_class=argparse.RawTextHelpFormatter,
     )
-    parser.add_argument(
-        "--version",
-        action="version",
-        version=__version__,
-    )
+    parser.add_argument("--version", action="version", version=__version__)
     parser.add_argument(
         "--check-links",
         action="store_true",
@@ -250,9 +248,8 @@ def cli():
     except OSError:
         print(
             colorize(
-                "Failed: "
-                "Not found: {path}".format(path=cli.markdown_file),
-                ansi=1
+                "Failed: " "Not found: {path}".format(path=cli.markdown_file),
+                ansi=1,
             )
         )
         return 1
