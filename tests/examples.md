@@ -128,4 +128,20 @@ becomes: `#what-happens-to-me`
 
 ## Err ... ##
 
-becomes: 
+becomes: `#err-`
+
+##### Redirect `stderr` _and_ `stdout`
+
+becomes:
+
+##### Redirect `stderr` *and* `stdout`
+
+becomes:
+
+##### Redirect `stderr` *_and_* `stdout`
+
+becomes:
+
+##### Redirect `stderr` **and** `stdout`
+
+becomes:
