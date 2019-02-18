@@ -64,3 +64,9 @@ Some ground rules:
 - Closing hashes are optional and do not need to match opening hashes in number; they are not part of title.
 - Trailing spaces in the title are not part of title.  (All surrounding whitespace is stripped.)
 - `mdtoc` will ignore comments prefaced with `#` that occur in Markdown code blocks (<code>\`\`\`</code>).
+
+How did we build these rules?
+
+The [Daring Fireball](https://daringfireball.net/projects/markdown/) page is the closest thing that exists to a canonical syntax specification for Markdown.  (The page is created and hosted by John Gruber, the original developer of Markdown as a language.)
+
+Because this page leaves some ambiguity, we also use the Sublime Text [MarkdownPreview](https://github.com/facelessuser/MarkdownPreview) tool as a basis for formatting rules.  In development, this consists of inferring syntax rules from input/output testing of real .md headers rendered using MarkdownPreview.
