@@ -138,8 +138,6 @@ def cli():
 
     cli = parser.parse_args()
     cli.markdown_file = os.path.expanduser(cli.markdown_file)
-    if not os.path.isfile(cli.markdown_file):
-        sys.exit("File not found: {}".format(cli.markdown_file))
 
     modify_and_write(cli.markdown_file)
 
