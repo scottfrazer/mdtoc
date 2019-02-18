@@ -36,7 +36,8 @@ class MarkdownError(Exception):
 
 def as_link(x):
     """Convert Markdown header string into relative URL."""
-    return re.sub(r"[^a-zA-Z0-9-_]", "", x.lower().replace(" ", "-"))
+
+    return re.sub(r"[^-\w\s]", "", re.sub(r"\s+", "-", x.lower()))
 
 
 def escape(x):
