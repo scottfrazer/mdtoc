@@ -56,7 +56,8 @@ def modify_and_write(path):
         table_of_contents = toc(markdown)
 
     toc_re = re.compile(
-        r"<\!---toc start-->(.*?)<\!---toc end-->", flags=re.DOTALL
+        r"^<\!---toc start-->(.*?)<\!---toc end-->$",
+        flags=re.DOTALL|re.MULTILINE
     )
     new_markdown, replacements = toc_re.subn(
         "<!---toc start-->\n\n{}\n\n<!---toc end-->".format(table_of_contents),
