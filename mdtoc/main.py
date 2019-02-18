@@ -134,7 +134,10 @@ def cli():
         action="store_true",
         help="Find all hyperlinks and ensure that \nthey point to something valid",  # noqa
     )
-    parser.add_argument("markdown_file")
+    parser.add_argument(
+        "markdown_file",
+        help="Relative or abs. path of the Markdown (.md) file to overwrite",
+    )
 
     cli = parser.parse_args()
     cli.markdown_file = os.path.expanduser(cli.markdown_file)
