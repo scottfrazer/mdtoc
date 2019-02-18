@@ -61,6 +61,16 @@ def test_header_pat():
         assert mdtoc.main.HEADER_PAT.match(line)
 
 
+@pytest.mark.parametrize("s", [
+    "    # Header 1 - too many leading spaces",
+    "####### Header 2 - too many hash signs",
+    "\\## Escaped initial hash",
+    "#missingspace",
+])
+def test_header_pat_neg(s):
+    assert not mdtoc.main.HEADER_PAT.match(s)
+
+
 @pytest.mark.parametrize(
     "i,out",
     [
