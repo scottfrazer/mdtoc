@@ -23,7 +23,6 @@ def toc(md_string):
 
 # Takes a Markdown string, returns a list of (level, header) tuples
 def headers(md_string):
-    headers = []
     is_comment_block = False
     for line in md_string.split('\n'):
         if line.startswith('```'): is_comment_block = not is_comment_block
@@ -32,8 +31,7 @@ def headers(md_string):
         if header:
             level = len(header.group(1))
             header = header.group(2).strip()
-            headers.append( (level, header) )
-    return headers
+            yield level, header
 
 def modify_and_write(path):
     with open(path) as fp:
