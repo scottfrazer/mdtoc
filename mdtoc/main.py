@@ -50,6 +50,9 @@ HEADER_PAT = re.compile(r"^\s{,3}(#{1,6})\s+(.*)")
 # Go figure.  We take the rule for its word.
 STRIP_CANDIDATE_PAT = re.compile(r"(?<!\\)[ \t#]+$|^[ \t#]+")
 
+# Bold & italics get dropped from links
+ITAL_PAT = re.compile(r"(?<!\\)_[^(?<!\\)_]+(?<!\\)_")
+BOLD_PAT = re.compile(r"(?<!\\)\*[^(?<!\\)\*]+(?<!\\)\*")
 
 class MarkdownError(Exception):
     """Markdown formatted incorrectly & unparseable."""
@@ -66,6 +69,15 @@ def _strip(x, _sub=STRIP_CANDIDATE_PAT.sub):
     return _sub("", x)
 
 
+def _replace_ital_bold(s):
+    to_repl = "_*"
+    for pat in (ITAL_PAT, BOLD_PAT):
+        for match in pat.finditer(s):
+            found = match.group(0)
+            s = s.replace(found, found.strip(to_repl))
+    return s
+
+
 def as_link(x):
     """Convert Markdown header string into relative URL."""
     res = re.sub(
@@ -74,6 +86,12 @@ def as_link(x):
         re.sub(r"\s+", "-", _strip(x.lower())),
         flags=re.U,  # Python 2
     )
+    # Slow route: check and remove bold & italic marks.
+    # TODO: find a fast route for this.
+    # We also cannot simply count occurences of _ and *, since
+    # they may be escaped by \
+    res = _replace_ital_bold(res)
+
     # One more fix: if the resulting link ends with multiple hyphens,
     # make it just one.
     if res.endswith("--"):

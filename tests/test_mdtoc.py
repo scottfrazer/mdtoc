@@ -60,6 +60,10 @@ def test_strip(i, out):
             "here-is-all-punctuation--_-at-once",
         ),
         ("## Err ... ##", "err-"),
+        ("##### Redirect `stderr` _and_ `stdout`", "redirect-stderr-and-stdout"),
+        ("##### Redirect `stderr` *_and_* `stdout`", "redirect-stderr-and-stdout"),
+        ("##### Redirect `stderr` **and** `stdout`", "redirect-stderr-and-stdout"),
+        ("##### Redirect `stderr` *_and_* `stdout`", "redirect-stderr-and-stdout"),
     ],
 )
 def test_as_link(header, out):

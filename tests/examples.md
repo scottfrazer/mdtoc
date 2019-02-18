@@ -132,16 +132,16 @@ becomes: `#err-`
 
 ##### Redirect `stderr` _and_ `stdout`
 
-becomes:
+becomes: `#redirect-stderr-and-stdout`
 
 ##### Redirect `stderr` *and* `stdout`
 
-becomes:
+becomes: `#redirect-stderr-and-stdout`
 
 ##### Redirect `stderr` *_and_* `stdout`
 
-becomes:
+becomes: `#redirect-stderr-and-stdout`
 
 ##### Redirect `stderr` **and** `stdout`
 
-becomes:
+becomes: `#redirect-stderr-and-stdout`
