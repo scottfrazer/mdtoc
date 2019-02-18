@@ -9,10 +9,12 @@ from xtermcolor import colorize
 
 
 def as_link(x):
+    """Convert Markdown header string into relative URL."""
     return re.sub(r"[^a-zA-Z0-9-_]", "", x.lower().replace(" ", "-"))
 
 
 def escape(x):
+    """Escape brackets, '['' and ']'."""
     return x.replace("[", "\\[").replace("]", "\\]")
 
 
