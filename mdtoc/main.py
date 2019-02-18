@@ -103,6 +103,12 @@ def modify_and_write(path):
             "\t$ mdtoc %s" % path
         )
 
+    elif replacements > 1:
+        raise MarkdownError(
+            "Multiple toc start/end tag pairs detected."
+            " Your Markdown file shoudl include only one pair of tags"
+        )
+
     with open(path, "w") as fp:
         fp.write(new_markdown)
 
