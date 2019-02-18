@@ -58,7 +58,8 @@ def test_strip(i, out):
         (
             r"### Here is All Punctuation '!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ At Once",
             "here-is-all-punctuation--_-at-once",
-        )
+        ),
+        ("## Err ... ##", "err-"),
     ],
 )
 def test_as_link(header, out):
@@ -148,7 +149,7 @@ xxx""",
 
 * [Welcome To Hell](#welcome-to-hell)
   * [Okay so far](#okay-so-far)
-  * [Err ... ##](#err--)
+  * [Err ...](#err-)
     * [Header 3](#header-3)
 
 <!---toc end-->

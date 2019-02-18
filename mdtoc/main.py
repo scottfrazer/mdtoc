@@ -67,12 +67,17 @@ def _strip(x, _sub=STRIP_CANDIDATE_PAT.sub):
 
 def as_link(x):
     """Convert Markdown header string into relative URL."""
-    return re.sub(
+    res = re.sub(
         r"[^-\w\s]",
         "",
         re.sub(r"\s+", "-", _strip(x.lower())),
         flags=re.U  # Python 2
     )
+    # One more fix: if the resulting link ends with multiple hyphens,
+    # make it just one.
+    if res.endswith("--"):
+        res = res.strip("-") + "-"
+    return res
 
 
 def escape(x):
