@@ -149,7 +149,7 @@ def get_links(md_string):
 
 
 _description = """
-Generates table of contents for Markdown files
+Generates table of contents for Markdown files.
 
 The algorithm searches for the text blocks
 between the delimiters:
@@ -168,7 +168,7 @@ def parse_args():
     from mdtoc import __version__
     parser = argparse.ArgumentParser(
         description=_description,
-        epilog="Created by Scott Frazer (https://github.com/scottfrazer)",
+        epilog="Created by Scott Frazer (https://github.com/scottfrazer).\n",
         formatter_class=argparse.RawTextHelpFormatter,
     )
     parser.add_argument(
@@ -179,11 +179,11 @@ def parse_args():
     parser.add_argument(
         "--check-links",
         action="store_true",
-        help="Find all hyperlinks and ensure that \nthey point to something valid",  # noqa
+        help="Find all hyperlinks and ensure that\nthey point to something valid",  # noqa
     )
     parser.add_argument(
         "markdown_file",
-        help="Relative or abs. path of the Markdown (.md) file to overwrite",
+        help="Relative or abs. path of the Markdown\n(.md) file to overwrite",
     )
     return parser
 
