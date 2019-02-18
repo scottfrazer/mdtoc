@@ -234,13 +234,12 @@ def parse_args():
         "markdown_file",
         help="Relative or abs. path of the Markdown\n(.md) file to overwrite",
     )
-    return parser
+    return parser.parse_args()
 
 
 def cli():
     """Command-line entry point."""
-    parser = parse_args()
-    cli = parser.parse_args()
+    cli = parse_args()
     cli.markdown_file = os.path.expanduser(cli.markdown_file)
 
     try:
