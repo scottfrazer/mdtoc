@@ -12,11 +12,25 @@ import pytest
 import mdtoc.main
 
 
+@pytest.mark.parametrize("i,out", [
+    ("# Simple markdown", "Simple markdown"),
+    (" # Leading space", "Leading space"),
+    ("### Ending hash ##", "Ending hash"),
+    (
+        "# This is markdown, I promise  \\### ",
+        "This is markdown, I promise  \\#"
+    ),
+])
+def test_strip(i, out):
+    assert mdtoc.main._strip(i) == out
+
+
 @pytest.mark.parametrize(
     "header,out",
     [
         ("# This is an L1 header", "this-is-an-l1-header"),
         ("#   Spaces     here ...     ", "spaces-here-"),
+        ("   ## Three leading spaces", "three-leading-spaces"),
         ("# THis is CAPS!!!", "this-is-caps"),
         ("## this is an l2 header", "this-is-an-l2-header"),
         ("### This is ... an L3 header??", "this-is--an-l3-header"),
@@ -29,10 +43,11 @@ import mdtoc.main
             "чемезов-заявил-об-уничтожении-поврежденных-штормом-ракет-с-400-для-китая",  # noqa
         ),
         ("### This has (some parens) in it", "this-has-some-parens-in-it"),
+        ("## What Happens to Me?  #####", "what-happens-to-me")
     ],
 )
 def test_as_link(header, out):
-    assert mdtoc.main.as_link(header.lstrip("#").strip()) == out
+    assert mdtoc.main.as_link(header) == out
 
 
 def test_header_pat():

@@ -36,21 +36,33 @@ MD_LINK_PAT = re.compile(
     re.M
 )
 
-# A Markdown "atx-style" header
-HEADER_PAT = re.compile(r"^(#+)(.*)")
+# A Markdown "atx-style" header, GitHub-flavored.
+# See https://github.github.com/gfm/#atx-heading
+HEADER_PAT = re.compile(r"^\s{,3}(#{1,6})(.*)")
+STRIP_CANDIDATE_PAT = re.compile(r"(?<!\\)[ \t#]+$|^[ \t#]+")
 
 
 class MarkdownError(Exception):
-    """Markdown formatted incorrectly."""
+    """Markdown formatted incorrectly & unparseable."""
+
+
+def _strip(x, _sub=STRIP_CANDIDATE_PAT.sub):
+    """Strip surrounding spaces, tabs, and hash signs.
+
+    Don't strip escaped hash signs.
+
+    This is equivalent to str.strip but with the negative lookbehind
+    assertion found in STRIP_CANDIDATE_PAT.
+    """
+    return _sub("", x)
 
 
 def as_link(x):
     """Convert Markdown header string into relative URL."""
-
     return re.sub(
         r"[^-\w\s]",
         "",
-        re.sub(r"\s+", "-", x.lower()),
+        re.sub(r"\s+", "-", _strip(x.lower())),
         flags=re.U  # Python 2
     )
 
