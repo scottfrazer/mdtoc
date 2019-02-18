@@ -42,6 +42,11 @@ MD_LINK_PAT = re.compile(
 HEADER_PAT = re.compile(r"^\s{,3}(#{1,6})\s+(.*)")
 
 # Used in _strip() - see docstring.
+# NOTE: GitHub seems to get its own logic wrong on this one.
+# It will render:
+# - "### foo \###" as "foo ###"
+# - "## foo #\##" as "foo ###"
+# Go figure.  We take the rule for its word.
 STRIP_CANDIDATE_PAT = re.compile(r"(?<!\\)[ \t#]+$|^[ \t#]+")
 
 
@@ -100,7 +105,7 @@ def toc(md_string):
         toc.append(
             "{spaces}* [{header}](#{link})".format(
                 spaces="  " * (level - 1),
-                header=escape(header),
+                header=escape(_strip(header)),
                 link=link,
             )
         )
