@@ -11,6 +11,25 @@ import requests
 from xtermcolor import colorize
 
 
+TOC_PAT = re.compile(
+    r"^<\!---toc start-->(.*?)<\!---toc end-->$",
+    flags=re.DOTALL|re.M
+)
+
+# Pattern needs to be careful for URLs containing parentheses,
+# nested within the actual Markdown link's parentheses.
+# I.e.
+# [Text here](https://www.cool.com/this(-is-a)-link.html)
+MD_LINK_PAT = re.compile(
+    r"\[([^\[\]]+)\]"  # Brackets containing non-bracket characters
+    r"\((([^\s)(]|\([^\s)(]*\))*)\)",  # Outer parentheses
+    re.M
+)
+
+# A Markdown "atx-style" header
+HEADER_PAT = re.compile(r"^(#+)(.*)")
+
+
 class MarkdownError(Exception):
     """Markdown formatted incorrectly."""
 
@@ -47,7 +66,7 @@ def headers(md_string):
             is_comment_block = not is_comment_block
         if is_comment_block:
             continue
-        header = re.match(r"^(#+)(.*)", line)
+        header = HEADER_PAT.match(line)
         if header:
             level = len(header.group(1))
             header = header.group(2).strip()
@@ -67,11 +86,7 @@ def modify_and_write(path):
         markdown = fp.read()
         table_of_contents = toc(markdown)
 
-    toc_re = re.compile(
-        r"^<\!---toc start-->(.*?)<\!---toc end-->$",
-        flags=re.DOTALL|re.MULTILINE
-    )
-    new_markdown, replacements = toc_re.subn(
+    new_markdown, replacements = TOC_PAT.subn(
         "<!---toc start-->\n\n{}\n\n<!---toc end-->".format(table_of_contents),
         markdown,
     )
@@ -93,6 +108,10 @@ def modify_and_write(path):
 
 
 def get_links(md_string):
+    """Find links in a Markdown string.
+
+    Yields a 4-tuple:
+    """
     def line_col(position):
         l, c = 1, 1
         for idx, char in enumerate(md_string):
@@ -104,11 +123,9 @@ def get_links(md_string):
                 l, c = l, c + 1
         return (l, c)
 
-    results = []
-    for m in re.finditer(r"\[([^\[\]]*)\]\((.*?)\)", md_string, re.M):
+    for m in MD_LINK_PAT.finditer(md_string):
         line, col = line_col(m.start(1))
-        results.append((m.group(1), m.group(2), line, col))
-    return results
+        yield m.group(1), m.group(2), line, col
 
 
 _description = """
