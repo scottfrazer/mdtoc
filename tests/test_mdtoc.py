@@ -47,6 +47,18 @@ def test_strip(i, out):
         ),
         ("### This has (some parens) in it", "this-has-some-parens-in-it"),
         ("## What Happens to Me?  #####", "what-happens-to-me"),
+        ("## foo ##", "foo"),
+        ("# foo ##################################", "foo"),
+        ("##### foo ##", "foo"),
+        ("### foo ###       ", "foo"),
+        ("### foo ### b", "foo--b"),
+        ("### foo \\###", "foo-"),
+        ("## foo #\\##", "foo-"),
+        ("# foo \\#", "foo-"),
+        (
+            r"### Here is All Punctuation '!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ At Once",
+            "here-is-all-punctuation--_-at-once",
+        )
     ],
 )
 def test_as_link(header, out):
