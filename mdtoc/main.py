@@ -137,7 +137,7 @@ def modify_and_write(path):
 def get_links(md_string):
     """Find links in a Markdown string.
 
-    Yields a 4-tuple:
+    Yields a 4-tuple: text, URL, linenum, colnum.
     """
     def line_col(position):
         l, c = 1, 1
