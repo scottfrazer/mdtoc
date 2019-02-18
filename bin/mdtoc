@@ -3,4 +3,5 @@
 import sys
 import mdtoc.main
 
-sys.exit(mdtoc.main.cli())
+if __name__ == "__main__":
+    sys.exit(mdtoc.main.cli())
