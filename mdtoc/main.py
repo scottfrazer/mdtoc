@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Generate generate table of contents within Markdown (.md) files."""
 
 # Steps:
@@ -46,7 +47,12 @@ class MarkdownError(Exception):
 def as_link(x):
     """Convert Markdown header string into relative URL."""
 
-    return re.sub(r"[^-\w\s]", "", re.sub(r"\s+", "-", x.lower()))
+    return re.sub(
+        r"[^-\w\s]",
+        "",
+        re.sub(r"\s+", "-", x.lower()),
+        flags=re.U  # Python 2
+    )
 
 
 def escape(x):
