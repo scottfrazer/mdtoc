@@ -39,6 +39,8 @@ MD_LINK_PAT = re.compile(
 # A Markdown "atx-style" header, GitHub-flavored.
 # See https://github.github.com/gfm/#atx-heading
 HEADER_PAT = re.compile(r"^\s{,3}(#{1,6})\s+(.*)")
+
+# Used in _strip() - see docstring.
 STRIP_CANDIDATE_PAT = re.compile(r"(?<!\\)[ \t#]+$|^[ \t#]+")
 
 
