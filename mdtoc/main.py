@@ -1,3 +1,14 @@
+"""Generate generate table of contents within Markdown (.md) files."""
+
+# Steps:
+#
+# 1. Open .md doc for reading; get the doc as a Python str
+# 2. Build a generator of (level: int, header: str) for the found headers
+# 3. Format & indent the found headers using []() Markdown style
+# 4. Replace '<!---toc start-->', '<!---toc end-->', and text in between
+#    with the str result from (3.)
+# 5. Overwrite the input file with the result
+
 from __future__ import print_function
 from __future__ import unicode_literals
 
@@ -44,7 +55,11 @@ def escape(x):
 
 
 def toc(md_string):
-    """Takes a Markdown string, returns TOC string (in Markdown)."""
+    """Takes a Markdown string, returns TOC string (in Markdown).
+
+    Formats indented headers in []() style.
+    """
+
     toc = []
     for level, header in headers(md_string):
         toc.append(
