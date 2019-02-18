@@ -21,7 +21,7 @@ from xtermcolor import colorize
 
 
 TOC_PAT = re.compile(
-    r"^<\!---toc start-->(.*?)<\!---toc end-->$",
+    r"[ \t]*<\!---toc start-->(.*?)<\!---toc end-->[ \t]*",
     flags=re.DOTALL | re.M
 )
 
