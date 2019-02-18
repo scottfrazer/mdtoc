@@ -149,7 +149,8 @@ by a table of contents.
 """
 
 
-def cli():
+def parse_args():
+    """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
         description=_description,
         epilog="Created by Scott Frazer (https://github.com/scottfrazer)",
@@ -169,7 +170,12 @@ def cli():
         "markdown_file",
         help="Relative or abs. path of the Markdown (.md) file to overwrite",
     )
+    return parser
 
+
+def cli():
+    """Command-line entry point."""
+    parser = parse_args()
     cli = parser.parse_args()
     cli.markdown_file = os.path.expanduser(cli.markdown_file)
 
