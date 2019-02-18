@@ -14,6 +14,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import argparse
+import collections
 import os
 import re
 
@@ -81,12 +82,26 @@ def toc(md_string):
     """
 
     toc = []
+    n_seen = collections.defaultdict(int)
+
     for level, header in headers(md_string):
+
+        # If we see the same header multiple times (regardless of level),
+        # it should have a 1..n suffix on the end.  The first occurence
+        # gets no suffix; others get 1..n.
+        link = as_link(header)
+        n = n_seen[link]
+        if n > 0:
+            n_seen[link] += 1
+            link += "-" + str(n)
+        else:
+            n_seen[link] += 1
+
         toc.append(
             "{spaces}* [{header}](#{link})".format(
                 spaces="  " * (level - 1),
                 header=escape(header),
-                link=as_link(header),
+                link=link,
             )
         )
     return "\n".join(toc)

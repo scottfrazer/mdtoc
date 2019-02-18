@@ -12,15 +12,18 @@ import pytest
 import mdtoc.main
 
 
-@pytest.mark.parametrize("i,out", [
-    ("# Simple markdown", "Simple markdown"),
-    (" # Leading space", "Leading space"),
-    ("### Ending hash ##", "Ending hash"),
-    (
-        "# This is markdown, I promise  \\### ",
-        "This is markdown, I promise  \\#"
-    ),
-])
+@pytest.mark.parametrize(
+    "i,out",
+    [
+        ("# Simple markdown", "Simple markdown"),
+        (" # Leading space", "Leading space"),
+        ("### Ending hash ##", "Ending hash"),
+        (
+            "# This is markdown, I promise  \\### ",
+            "This is markdown, I promise  \\#",
+        ),
+    ],
+)
 def test_strip(i, out):
     assert mdtoc.main._strip(i) == out
 
@@ -43,7 +46,7 @@ def test_strip(i, out):
             "чемезов-заявил-об-уничтожении-поврежденных-штормом-ракет-с-400-для-китая",  # noqa
         ),
         ("### This has (some parens) in it", "this-has-some-parens-in-it"),
-        ("## What Happens to Me?  #####", "what-happens-to-me")
+        ("## What Happens to Me?  #####", "what-happens-to-me"),
     ],
 )
 def test_as_link(header, out):
@@ -61,12 +64,26 @@ def test_header_pat():
         assert mdtoc.main.HEADER_PAT.match(line)
 
 
-@pytest.mark.parametrize("s", [
-    "    # Header 1 - too many leading spaces",
-    "####### Header 2 - too many hash signs",
-    "\\## Escaped initial hash",
-    "#missingspace",
-])
+def test_repeated_headers():
+    s = """\
+# foo
+ ## foo
+  ### foo"""
+    assert (
+        mdtoc.main.toc(s)
+        == "* [foo](#foo)\n  * [foo](#foo-1)\n    * [foo](#foo-2)"
+    )
+
+
+@pytest.mark.parametrize(
+    "s",
+    [
+        "    # Header 1 - too many leading spaces",
+        "####### Header 2 - too many hash signs",
+        "\\## Escaped initial hash",
+        "#missingspace",
+    ],
+)
 def test_header_pat_neg(s):
     assert not mdtoc.main.HEADER_PAT.match(s)
 
