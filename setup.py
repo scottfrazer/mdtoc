@@ -1,13 +1,15 @@
+import os
 from setuptools import setup
 
 from mdtoc import __version__
 
-long_description = "Adds table of contents to Markdown files"
-
 setup(
     name="mdtoc",
     version=__version__,
-    description=long_description,
+    description="Adds table of contents to Markdown files",
+    long_description=open(
+        os.path.join(os.path.abspath(os.path.dirname(__file__)), "README.md")
+    ).read(),
     author="Scott Frazer",
     author_email="scott.d.frazer@gmail.com",
     packages=["mdtoc"],
