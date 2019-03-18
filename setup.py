@@ -14,7 +14,7 @@ setup(
     author_email="scott.d.frazer@gmail.com",
     packages=["mdtoc"],
     install_requires=["xtermcolor", "requests<3.0.0"],
-    scripts={"scripts/mdtoc"},
+    scripts={"bin/mdtoc"},
     license="MIT",
     keywords="Markdown, table of contents, toc",
     url="http://github.com/scottfrazer/mdtoc",
